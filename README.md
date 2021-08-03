@@ -3,6 +3,8 @@
 [Маршрутизация](#маршрутизация)
 - [GET Запрос](#пример-get-запроса)
 - [POST Запрос](#пример-post-запроса)
+- [PUT Запрос](#пример-put-запроса)
+- [DELETE Запрос](#пример-delete-запроса)
 
 Методы import/export'а модулей.
 
@@ -74,4 +76,57 @@ router
 
         return res.status(community.error ? 400 : 200).json(community);
     });
-    ```
+```
+
+#### Пример PUT запроса
+```js
+router
+    .route("/:id")
+    /**
+     * @api {put} /communities/:id Update Community Details
+     * @apiName UpdateCommunity
+     * @apiGroup Communities
+     * @apiVersion 1.0.0
+     */
+    .put(
+        authorized,
+        validator.updateCommunity,
+        async ({ params: { id }, body, locals: { currentUserId } }, res) => {
+            const data = { id, userId: currentUserId, ...body };
+            const options = { currentUserId };
+
+            const result = await communitiesController.updateCommunity(
+                data,
+                options
+            );
+
+            return res.status(result.error ? 400 : 200).json(result);
+        }
+    );
+```
+
+#### Пример DELETE запроса
+```js
+router
+    .route("/:id")
+    /**
+     * @api {get} /communities/:id/join Join Community
+     * @apiName JoinCommunity
+     * @apiGroup Communities
+     * @apiVersion 1.0.0
+     */
+    .delete(
+        authorized,
+        async ({ params: { id }, locals: { currentUserId } }, res) => {
+            const query = { id };
+            const options = { currentUserId };
+
+            const community = await communitiesController.deleteCommunity(
+                query,
+                options
+            );
+
+            return res.status(community.error ? 400 : 200).json(community);
+        }
+    );
+```
