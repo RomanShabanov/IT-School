@@ -113,7 +113,7 @@ router
 router
     .route("/:id")
     /**
-     * @api {get} /communities/:id/join Join Community
+     * @api {delete} /communities/:id/join Join Community
      * @apiName JoinCommunity
      * @apiGroup Communities
      * @apiVersion 1.0.0
