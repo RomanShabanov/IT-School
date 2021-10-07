@@ -8,6 +8,9 @@
 - [PUT Запрос](#пример-put-запроса)
 - [DELETE Запрос](#пример-delete-запроса)
 
+[Тестирование](#тестирование)
+- [JEST Тестирование][#пример-jest-unit-теста]
+
 ## Работа с Модулями
 Методы import/export'а модулей.
 
@@ -132,4 +135,39 @@ router
             return res.status(community.error ? 400 : 200).json(community);
         }
     );
+```
+## Тестирование
+
+#### Пример JEST Unit теста
+```js
+/* Libraries */
+const axios = require("axios");
+
+/* Config */
+const { USER_TOKEN, cacheApiUrl: API_URL } = require("../variables");
+
+const instanceClear = axios.create({
+    baseURL: API_URL,
+});
+
+const instanceSession = axios.create({
+    baseURL: API_URL,
+    headers: { Authorization: USER_TOKEN },
+});
+
+describe("Create Comment", () => {
+    it("Should fail to obtain a token without a session", async () => {
+        res = await instanceClear.get("/chat/token").catch((err) => err);
+
+        expect(res.response.status).toEqual(401);
+        expect(res.response.data).toEqual("Unauthorized.");
+    });
+
+    it("Should successfully obtain a chat token", async () => {
+        res = await instanceSession.get("/chat/token").catch((err) => err);
+
+        expect(res.status).toEqual(200);
+        expect(res.data).toHaveProperty("token");
+    });
+});
 ```
