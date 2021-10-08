@@ -171,3 +171,21 @@ describe("Create Comment", () => {
     });
 });
 ```
+## Модели БД
+
+#### Образец модели
+```js
+module.exports = (sequelize, DataTypes) => {
+  const UserRole = sequelize.define(
+    "user_role",
+    {},
+    {
+      timestamps: true,
+    }
+  );
+
+  UserRole.associate = (models) => {};
+
+  return UserRole;
+};
+```
