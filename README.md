@@ -60,7 +60,7 @@ router
 
             const tags = [];
 
-            return res.status(!tags || tags.error).json(tags);
+            return res.status(!tags || tags.error ? 400 : 200 ).json(tags);
         }
     );
 ```
